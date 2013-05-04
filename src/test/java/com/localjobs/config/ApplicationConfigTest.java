@@ -25,7 +25,7 @@ public class ApplicationConfigTest {
 	private MongoTemplate mongoTemplate;
 
 	@Test
-	public void jdbcTemplateAndMongoTemplateShouldBeNotNull() {
+	public void entityManagerAndMongoTemplateShouldBeNotNull() {
 		assertNotNull(entityManager);
 		assertNotNull(mongoTemplate);
 	}
