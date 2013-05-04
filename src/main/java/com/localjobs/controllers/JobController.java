@@ -2,6 +2,7 @@ package com.localjobs.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -19,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +33,7 @@ import com.localjobs.googleapi.DistanceResponse;
 import com.localjobs.googleapi.GoogleDistanceClient;
 import com.localjobs.jpa.repository.AccountRepository;
 import com.localjobs.service.CoordinateFinder;
+import com.localjobs.service.FullTextSearchService;
 import com.localjobs.service.LocalJobsService;
 import com.localjobs.utils.SecurityUtils;
 
@@ -49,6 +52,9 @@ public class JobController {
 	
 	@Inject
 	private GoogleDistanceClient googleDistanceClient;
+	
+	@Inject
+	private FullTextSearchService fullTextSearchService;
 
 	public JobController() {
 	}
@@ -141,5 +147,17 @@ public class JobController {
 			locaJobsWithDistance.add(linkedinJobWithDistance);
 		}
 		return locaJobsWithDistance;
+	}
+	
+	@RequestMapping(value = "/fulltext/{query}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<Job> fullTextSearch(@PathVariable("query") String query) {
+		System.out.println("Full text search query is .. " + query);
+		Set<String> documentIds = fullTextSearchService.search(query);
+		if (CollectionUtils.isEmpty(documentIds)) {
+			return new ArrayList<Job>();
+		}
+		Query idsQuery = Query.query(Criteria.where("_id").in(documentIds));
+		return mongoTemplate.find(idsQuery, Job.class);
 	}
 }

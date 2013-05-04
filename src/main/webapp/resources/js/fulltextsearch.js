@@ -32,7 +32,7 @@
 				console.log("query : "+query);
 				
 				var self = this;
-				$.get("api/jobs/fulltext/"+query  , function (results){ 
+				$.get("jobs/fulltext/"+query  , function (results){ 
 			           $("#fullTextSearchForm").unmask();
 			           self.renderResults(results,self);
 			     });
