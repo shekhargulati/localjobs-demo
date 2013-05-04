@@ -1,20 +1,41 @@
 package com.localjobs.domain;
 
-public class Account {
+import java.util.ArrayList;
+import java.util.List;
 
-	private final String username;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
 
-	private final String password;
+@Entity
+@Table(name = "ACCOUNTS")
+public class Account extends AbstractEntity {
 
-	private final String firstName;
+	private String username;
 
-	private final String lastName;
-	
-	private final String address;
-	
-	private String skills;
-	
-	public Account(String username, String password, String firstName, String lastName,String address,String skills) {
+	private String password;
+
+	private String firstName;
+
+	private String lastName;
+
+	private String address;
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "SKILLS", joinColumns = @JoinColumn(name = "account_id"))
+	@Column(name = "skill")
+	private List<String> skills = new ArrayList<String>();
+
+	public Account() {
+		super();
+	}
+
+	public Account(String username, String password, String firstName,
+			String lastName, String address, List<String> skills) {
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
@@ -27,62 +48,48 @@ public class Account {
 		return username;
 	}
 
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public String getPassword() {
 		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getFirstName() {
 		return firstName;
 	}
 
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
 	public String getLastName() {
 		return lastName;
 	}
-	
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
 	public String getAddress() {
 		return address;
 	}
-	
-	public String getFullName() {
-		return firstName + " "+ lastName;
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
-	
-	public String getSkills() {
+
+	public List<String> getSkills() {
 		return skills;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((password == null) ? 0 : password.hashCode());
-		result = prime * result
-				+ ((username == null) ? 0 : username.hashCode());
-		return result;
+	public void setSkills(List<String> skills) {
+		this.skills = skills;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Account other = (Account) obj;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
-			return false;
-		return true;
-	}
-	
-	
 }

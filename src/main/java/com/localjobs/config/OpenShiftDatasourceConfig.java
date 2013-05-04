@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.authentication.UserCredentials;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.orm.jpa.vendor.Database;
 
 import com.mongodb.Mongo;
 
@@ -51,5 +52,10 @@ public class OpenShiftDatasourceConfig implements DatasourceConfig{
 		String databaseName = System.getenv("OPENSHIFT_APP_NAME");
 		MongoDbFactory mongoDbFactory = new SimpleMongoDbFactory(mongo, databaseName, userCredentials);
 		return mongoDbFactory;
+	}
+
+	@Override
+	public Database database() {
+		return Database.MYSQL;
 	}
 }

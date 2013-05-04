@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.orm.jpa.vendor.Database;
 
 import com.mongodb.Mongo;
 
@@ -31,5 +32,10 @@ public class DevDatasourceConfig implements DatasourceConfig{
 		MongoDbFactory mongoDbFactory = new SimpleMongoDbFactory(mongo,
 				databaseName);
 		return mongoDbFactory;
+	}
+
+	@Override
+	public Database database() {
+		return Database.H2;
 	}
 }
