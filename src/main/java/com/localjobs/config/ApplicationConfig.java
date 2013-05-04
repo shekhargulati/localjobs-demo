@@ -9,6 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -18,11 +19,13 @@ import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
 import com.localjobs.domain.Account;
 import com.localjobs.jpa.repository.AccountRepository;
+import com.localjobs.mongodb.repository.JobRepository;
 
 @ComponentScan(basePackages = "com.localjobs")
 @Configuration
 @PropertySource("classpath:application.properties")
 @EnableJpaRepositories(basePackageClasses = AccountRepository.class)
+@EnableMongoRepositories(basePackageClasses = JobRepository.class)
 @EnableTransactionManagement
 public class ApplicationConfig {
 
