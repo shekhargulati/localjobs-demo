@@ -67,11 +67,11 @@
 		<hr></hr>
 		<sec:authorize access="isAuthenticated()">
 			<ul class="nav nav-pills" >
-				<li class="active"><a href="/home">Home</a></li>
-				<li><a href="/connect">Connections</a></li>
-				<li><a href="/myprofile">My Profile</a></li>
-				<li><a href="/search">Location Aware Search</a></li>
-				<li><a href="/fulltextsearch">Full Text Search</a></li>
+				<li class="active"><a href="${pageContext.servletContext.contextPath}/home">Home</a></li>
+				<li><a href="${pageContext.servletContext.contextPath}/connect">Connections</a></li>
+				<li><a href="${pageContext.servletContext.contextPath}/myprofile">My Profile</a></li>
+				<li><a href="${pageContext.servletContext.contextPath}/search">Location Aware Search</a></li>
+				<li><a href="${pageContext.servletContext.contextPath}/fulltextsearch">Full Text Search</a></li>
 			</ul>
 		</sec:authorize>
 

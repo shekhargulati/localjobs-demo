@@ -92,4 +92,7 @@ public class Account extends AbstractEntity {
 		this.skills = skills;
 	}
 
+	public String getFullName(){
+		return firstName + " " + lastName; 
+	}
 }

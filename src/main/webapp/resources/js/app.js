@@ -42,7 +42,7 @@
 				    	  console.log('longitude .. '+longitude);
 				    	  console.log('latitude .. '+latitude);
 			
-							$.get("api/jobs/"+skills+"/?longitude="+longitude+"&latitude="+latitude  , function (results){ 
+							$.get("jobs/nearme/"+skills+"?longitude="+longitude+"&latitude="+latitude  , function (results){ 
 			                    $("#jobSearchForm").unmask();
 			                    self.renderResults(results,self);
 			                });

@@ -14,20 +14,20 @@
 <meta name="author" content="">
 
 <script src="resources/js/jquery.js"></script>
-<link rel="stylesheet" href="<c:url value="/resources/page.css" />"
+<link rel="stylesheet" href="<c:url value="${pageContext.servletContext.contextPath}/resources/page.css" />"
 	type="text/css" media="screen" />
 <link rel="stylesheet"
-	href="<c:url value="/resources/messages/messages.css" />"
+	href="<c:url value="${pageContext.servletContext.contextPath}/resources/messages/messages.css" />"
 	type="text/css" media="screen" />
 
-<link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.servletContext.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
 
-<link href="/resources/css/bootstrap-responsive.min.css"
+<link href="${pageContext.servletContext.contextPath}/resources/css/bootstrap-responsive.min.css"
 	rel="stylesheet">
 
 <link rel="stylesheet" type="text/css"
-	href="/resources/css/jquery.tagsinput.css" />
-<link href="/resources/css/jquery.loadmask.css" rel="stylesheet"
+	href="${pageContext.servletContext.contextPath}/resources/css/jquery.tagsinput.css" />
+<link href="${pageContext.servletContext.contextPath}/resources/css/jquery.loadmask.css" rel="stylesheet"
 	type="text/css" />
 	
 	
@@ -46,15 +46,15 @@ div.jobBox {
     <![endif]-->
 
 <!-- Fav and touch icons -->
-<link rel="shortcut icon" href="/resources/ico/favicon.ico">
+<link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/resources/ico/favicon.ico">
 <link rel="apple-touch-icon-precomposed" sizes="144x144"
-	href="/resources/ico/apple-touch-icon-144-precomposed.png">
+	href="${pageContext.servletContext.contextPath}/resources/ico/apple-touch-icon-144-precomposed.png">
 <link rel="apple-touch-icon-precomposed" sizes="114x114"
-	href="/resources/ico/apple-touch-icon-114-precomposed.png">
+	href="${pageContext.servletContext.contextPath}/resources/ico/apple-touch-icon-114-precomposed.png">
 <link rel="apple-touch-icon-precomposed" sizes="72x72"
-	href="/resources/ico/apple-touch-icon-72-precomposed.png">
+	href="${pageContext.servletContext.contextPath}/resources/ico/apple-touch-icon-72-precomposed.png">
 <link rel="apple-touch-icon-precomposed"
-	href="/resources/ico/apple-touch-icon-57-precomposed.png">
+	href="${pageContext.servletContext.contextPath}/resources/ico/apple-touch-icon-57-precomposed.png">
 </head>
 
 <body>
@@ -82,11 +82,11 @@ div.jobBox {
 		<hr></hr>
 		<sec:authorize access="isAuthenticated()">
 			<ul class="nav nav-pills">
-				<li class="active"><a href="/home">Home</a></li>
-				<li><a href="/connect">Connections</a></li>
-				<li><a href="/myprofile">My Profile</a></li>
-				<li><a href="/search">Location Aware Search</a></li>
-				<li><a href="/fulltextsearch">Full Text Search</a></li>
+				<li class="active"><a href="${pageContext.servletContext.contextPath}/home">Home</a></li>
+				<li><a href="${pageContext.servletContext.contextPath}/connect">Connections</a></li>
+				<li><a href="${pageContext.servletContext.contextPath}/myprofile">My Profile</a></li>
+				<li><a href="${pageContext.servletContext.contextPath}/search">Location Aware Search</a></li>
+				<li><a href="${pageContext.servletContext.contextPath}/fulltextsearch">Full Text Search</a></li>
 			</ul>
 		</sec:authorize>
 
@@ -148,18 +148,18 @@ div.jobBox {
     </div>
     </script>
 
-	<script src="/resources/js/jquery.js"></script>
-	<script src="/resources/js/jquery.tagsinput.js"></script>
+	<script src="${pageContext.servletContext.contextPath}/resources/js/jquery.js"></script>
+	<script src="${pageContext.servletContext.contextPath}/resources/js/jquery.tagsinput.js"></script>
 	<script type="text/javascript"
-		src="/resources/js/jquery.loadmask.min.js"></script>
+		src="${pageContext.servletContext.contextPath}/resources/js/jquery.loadmask.min.js"></script>
 	<script type="text/javascript"
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATvS5bY-3CkeiedEWtr5WFHEQFOi-9uYs&sensor=true">
 		
 	</script>
-	<script src="/resources/js/bootstrap.min.js"></script>
-	<script src="/resources/js/underscore.js"></script>
-	<script src="/resources/js/backbone.js"></script>
-	<script src="/resources/js/mustache.js"></script>
+	<script src="${pageContext.servletContext.contextPath}/resources/js/bootstrap.min.js"></script>
+	<script src="${pageContext.servletContext.contextPath}/resources/js/underscore.js"></script>
+	<script src="${pageContext.servletContext.contextPath}/resources/js/backbone.js"></script>
+	<script src="${pageContext.servletContext.contextPath}/resources/js/mustache.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#skills').tagsInput({
@@ -167,7 +167,7 @@ div.jobBox {
 			});
 		});
 	</script>
-	<script src="/resources/js/app.js"></script>
+	<script src="${pageContext.servletContext.contextPath}/resources/js/app.js"></script>
 
 
 
