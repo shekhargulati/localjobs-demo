@@ -1,0 +1,8 @@
+#!/bin/bash
+# This deploy hook gets executed after dependencies are resolved and the
+# build hook has been run but before the application has been started back
+# up again.  This script gets executed directly, so it could be python, php,
+# ruby, etc.
+set -x
+export MYSQL_PWD=$OPENSHIFT_MYSQL_DB_PASSWORD
+mysql --host=$OPENSHIFT_MYSQL_DB_HOST --port=$OPENSHIFT_MYSQL_DB_PORT --user=$OPENSHIFT_MYSQL_DB_USERNAME $OPENSHIFT_APP_NAME < $OPENSHIFT_REPO_DIR/src/main/resources/create-tables.sql
