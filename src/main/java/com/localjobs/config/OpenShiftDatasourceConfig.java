@@ -65,9 +65,9 @@ public class OpenShiftDatasourceConfig implements DatasourceConfig {
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
-        jedisConnectionFactory.setHostName(System.getenv("OPENSHIFT_REDIS_HOST"));
-        jedisConnectionFactory.setPort(Integer.valueOf(System.getenv("OPENSHIFT_REDIS_PORT")));
-        jedisConnectionFactory.setPassword(System.getenv("REDIS_PASSWORD"));
+        jedisConnectionFactory.setHostName(System.getenv("OPENSHIFT_REDIS_DB_HOST"));
+        jedisConnectionFactory.setPort(Integer.valueOf(System.getenv("OPENSHIFT_REDIS_DB_PORT")));
+        jedisConnectionFactory.setPassword(System.getenv("OPENSHIFT_REDIS_DB_PASSWORD"));
         jedisConnectionFactory.setUsePool(true);
         return jedisConnectionFactory;
     }
