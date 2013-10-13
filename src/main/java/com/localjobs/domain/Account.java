@@ -95,4 +95,11 @@ public class Account extends AbstractEntity {
     public String getFullName() {
         return firstName + " " + lastName;
     }
+
+    @Override
+    public String toString() {
+        return "Account [username=" + username + ", password=" + password + ", firstName=" + firstName + ", lastName="
+                + lastName + ", address=" + address + "]";
+    }
+    
 }

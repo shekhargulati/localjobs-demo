@@ -7,6 +7,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +36,8 @@ public class HomeController {
     @Inject
     private GoogleDistanceClient googleDistanceClient;
 
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Inject
     public HomeController(Provider<ConnectionRepository> connectionRepositoryProvider,
             AccountRepository accountRepository, LocalJobsService localJobsService) {
@@ -49,12 +53,16 @@ public class HomeController {
 
         Account account = accountRepository.findAccountByUsername(SecurityUtils.getCurrentLoggedInUsername());
 
+        System.out.println("Acccount " + account);
         double[] coordinates = CoordinateFinder.getLatLng(account.getAddress());
         double latitude = coordinates[0];
         double longitude = coordinates[1];
 
         List<JobDistanceVo> recommendedJobs = recommendedJobs(latitude, longitude,
                 account.getSkills().toArray(new String[0]));
+
+        logger.info("Found jobs" + recommendedJobs);
+        System.out.println("Found jobs " + recommendedJobs);
 
         model.addAttribute("recommendedJobs", recommendedJobs);
 
