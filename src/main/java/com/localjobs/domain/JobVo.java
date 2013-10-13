@@ -34,17 +34,18 @@ public class JobVo implements Serializable {
         this.distanceText = String.valueOf(this.distance) + " " + metric;
     }
 
-    private double format(double d){
+    private double format(double d) {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         String format = decimalFormat.format(d);
         double parsedValue = 0;
         try {
-             parsedValue = (Double)decimalFormat.parse(format);
+            parsedValue = (Double) decimalFormat.parse(format);
         } catch (ParseException e) {
             return d;
         }
         return parsedValue;
     }
+
     public JobVo() {
         // TODO Auto-generated constructor stub
     }
@@ -80,7 +81,7 @@ public class JobVo implements Serializable {
     public String[] getSkills() {
         return skills;
     }
-    
+
     public String getAddress() {
         return address;
     }
@@ -91,5 +92,5 @@ public class JobVo implements Serializable {
                 + ", distance=" + distance + ", distanceText=" + distanceText + ", metric=" + metric + ", skills="
                 + Arrays.toString(skills) + ", address=" + address + "]";
     }
-    
+
 }

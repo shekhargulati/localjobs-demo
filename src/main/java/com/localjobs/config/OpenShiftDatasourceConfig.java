@@ -60,7 +60,7 @@ public class OpenShiftDatasourceConfig implements DatasourceConfig {
     public Database database() {
         return Database.POSTGRESQL;
     }
-    
+
     @Override
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {

@@ -7,7 +7,7 @@ import com.localjobs.domain.Account;
 
 public interface AccountRepository extends CrudRepository<Account, Long> {
 
-    @Cacheable(value="accounts")
+    @Cacheable(value = "accounts")
     Account findAccountByUsername(String username);
 
 }

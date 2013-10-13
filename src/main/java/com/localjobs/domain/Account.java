@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.junit.Ignore;
 
 @Entity
 @Table(name = "ACCOUNTS")
@@ -94,7 +93,7 @@ public class Account extends AbstractEntity {
     public void setSkills(List<String> skills) {
         this.skills = skills;
     }
-    
+
     @JsonIgnore
     public String getFullName() {
         return firstName + " " + lastName;

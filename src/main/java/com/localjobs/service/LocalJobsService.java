@@ -22,7 +22,6 @@ public interface LocalJobsService {
 
     void appyJob(String jobId, String username);
 
-
     List<JobVo> appliedJobs(double latitude, double longitude, String user);
 
     public abstract List<JobVo> recommendJobs(double latitude, double longitude, String[] skills, String username);

@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.localjobs.config.ApplicationConfig;
 import com.localjobs.domain.Account;
-import com.localjobs.jpa.repository.AccountRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)

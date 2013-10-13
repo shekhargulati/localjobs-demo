@@ -82,9 +82,9 @@ public class ApplicationConfig {
         template.setHashValueSerializer(new JacksonJsonRedisSerializer<>(Account.class));
         return template;
     }
-    
+
     @Bean
-    public RedisCacheManager cacheManager(){
+    public RedisCacheManager cacheManager() {
         RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate());
         return cacheManager;
     }
