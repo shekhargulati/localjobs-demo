@@ -26,7 +26,7 @@ public class OpenShiftDatasourceConfig implements DatasourceConfig {
         String databaseName = System.getenv("OPENSHIFT_APP_NAME");
         String url = "jdbc:postgresql://" + host + ":" + port + "/" + databaseName;
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName("com.postgresql.Driver");
+        dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl(url);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
