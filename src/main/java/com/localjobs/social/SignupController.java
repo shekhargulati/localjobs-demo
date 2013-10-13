@@ -1,6 +1,8 @@
 package com.localjobs.social;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -59,14 +61,29 @@ public class SignupController {
 
     private Account createAccount(SignupForm form, BindingResult formBinding) {
         try {
+            String[] skills = uncapitalizeArrayElements(getSkills(form.getSkills()));
             Account account = new Account(form.getUsername(), form.getPassword(), form.getFirstName(),
-                    form.getLastName(), form.getAddress(), Arrays.asList(form.getSkills().split(",")));
+                    form.getLastName(), form.getAddress(), Arrays.asList(skills));
             accountRepository.save(account);
             return account;
         } catch (Exception e) {
             formBinding.rejectValue("username", "user.duplicateUsername", "already in use");
             return null;
         }
+    }
+
+    private static String[] uncapitalizeArrayElements(String[] arr) {
+        List<String> elements = new ArrayList<String>();
+        for (String element : arr) {
+            elements.add(element.toLowerCase());
+        }
+        return elements.toArray(new String[0]);
+    }
+
+    private static String[] getSkills(String skillsStr) {
+        String[] skills = skillsStr.split(",");
+        skills = StringUtils.trimArrayElements(uncapitalizeArrayElements(skills));
+        return skills;
     }
 
 }
