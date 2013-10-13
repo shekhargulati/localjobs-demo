@@ -64,7 +64,7 @@ div.jobBox {
 		<div class="masthead">
 			<ul class="nav nav-pills pull-right">
 				<sec:authorize access="isAuthenticated()">
-					<li class="active"><a href="home">Home</a></li>
+					<li><a href="home">Home</a></li>
 				</sec:authorize>
 
 				<sec:authorize access="!isAuthenticated()">
@@ -80,17 +80,18 @@ div.jobBox {
 			<h3 class="muted">LocalJobs</h3>
 		</div>
 		<hr></hr>
+		<div id="main" class="container">
 		<sec:authorize access="isAuthenticated()">
 			<ul class="nav nav-pills">
-				<li class="active"><a href="${pageContext.servletContext.contextPath}/home">Home</a></li>
+				<li><a href="${pageContext.servletContext.contextPath}/home">Home</a></li>
 				<li><a href="${pageContext.servletContext.contextPath}/connect">Connections</a></li>
 				<li><a href="${pageContext.servletContext.contextPath}/myprofile">My Profile</a></li>
-				<li><a href="${pageContext.servletContext.contextPath}/search">Location Aware Search</a></li>
+				<li class="active"><a href="${pageContext.servletContext.contextPath}/search">Location Aware Search</a></li>
 				<li><a href="${pageContext.servletContext.contextPath}/fulltextsearch">Full Text Search</a></li>
 			</ul>
 		</sec:authorize>
 
-		<div id="main" class="container">
+		
 
 
 			<form id="jobSearchForm" class="form-horizontal">
@@ -104,8 +105,13 @@ div.jobBox {
 				<div class="control-group">
 					<div class="controls">
 						<textarea rows="3" id="location" class="input-xlarge"
-							placeholder="Enter location near which you want to search jobs"
-							required></textarea>
+							placeholder="Enter location near which you want to search jobs"></textarea>
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<div class="controls">
+						<input type="checkbox" id="useCurrentLocation" name="useCurrentLocation" value="true"> Use Current Location
 					</div>
 				</div>
 				<div class="control-group">
@@ -116,12 +122,15 @@ div.jobBox {
 				</div>
 
 			</form>
-
-		</div>
-
+		
+		
 		<div id="results"></div>
 
 		<hr>
+		
+		
+
+		
 
 		<footer id="footer">
 			<div class="links">
@@ -133,6 +142,7 @@ div.jobBox {
 				Gulati</a>. Contact him <a href="mailto:shekhargulati84@gmail.com">shekhargulati84@gmail.com</a>.<br />
 
 		</footer>
+		</div>
 
 	</div>
 
@@ -167,6 +177,7 @@ div.jobBox {
 			});
 		});
 	</script>
+	<script src="${pageContext.servletContext.contextPath}/resources/js/render-map.js"></script>
 	<script src="${pageContext.servletContext.contextPath}/resources/js/app.js"></script>
 
 

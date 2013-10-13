@@ -29,29 +29,38 @@
 				$("#jobSearchForm").mask("Finding Jobs ...");
 				var skills = this.$('input[name=skills]').val().split(',');
 				var address = this.$("#location").val();
+				var useCurrentLocation = $('#useCurrentLocation').is(":checked") ? true : false;
 			
 				console.log("skills : "+skills);
 				console.log("address : "+address);
+				console.log("useCurrentLocation : "+useCurrentLocation);
 			
 				var self = this;
 				geocoder = new google.maps.Geocoder();
-				geocoder.geocode( { 'address': address}, function(results, status) {
-				      if (status == google.maps.GeocoderStatus.OK) {
-				    	  var longitude = results[0].geometry.location.lng();
-				    	  var latitude = results[0].geometry.location.lat();
-				    	  console.log('longitude .. '+longitude);
-				    	  console.log('latitude .. '+latitude);
-			
-							$.get("/jobs/nearme/"+skills+"?longitude="+longitude+"&latitude="+latitude  , function (results){ 
-			                    $("#jobSearchForm").unmask();
-			                    self.renderResults(results,self);
-			                });
-			
-				      } else {
-				        alert("Geocode was not successful for the following reason: " + status);
-				        $("#jobSearchForm").unmask();
-				      }
-				});
+				if(useCurrentLocation){
+					getCurrentPosition(callback , skills);
+					$("#jobSearchForm")[0].reset();
+				}else{
+					geocoder.geocode( { 'address': address}, function(results, status) {
+					      if (status == google.maps.GeocoderStatus.OK) {
+					    	  var longitude = results[0].geometry.location.lng();
+					    	  var latitude = results[0].geometry.location.lat();
+					    	  console.log('longitude .. '+longitude);
+					    	  console.log('latitude .. '+latitude);
+				
+								$.get("/jobs/nearme/"+skills+"?longitude="+longitude+"&latitude="+latitude  , function (results){
+									$("#jobSearchForm")[0].reset();
+				                    $("#jobSearchForm").unmask();
+				                    self.renderResults(results,self);
+				                });
+				
+					      } else {
+					        alert("Geocode was not successful for the following reason: " + status);
+					        $("#jobSearchForm").unmask();
+					      }
+					});
+				}
+				
 			
 			
 			},

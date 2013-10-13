@@ -46,7 +46,7 @@
 
 	<div class="container-narrow">
 
-		<div class="masthead">
+		<div id="masthead" class="masthead">
 			<ul class="nav nav-pills pull-right">
 				<sec:authorize access="isAuthenticated()">
 					<li class="active"><a href="home">Home</a></li>
@@ -65,19 +65,22 @@
 			<h3 class="muted">LocalJobs</h3>
 		</div>
 		<hr></hr>
+		
+	<div id="content" class="container">
 		<sec:authorize access="isAuthenticated()">
 			<ul class="nav nav-pills" >
-				<li class="active"><a href="${pageContext.servletContext.contextPath}/home">Home</a></li>
+				<li><a href="${pageContext.servletContext.contextPath}/home">Home</a></li>
 				<li><a href="${pageContext.servletContext.contextPath}/connect">Connections</a></li>
 				<li><a href="${pageContext.servletContext.contextPath}/myprofile">My Profile</a></li>
 				<li><a href="${pageContext.servletContext.contextPath}/search">Location Aware Search</a></li>
 				<li><a href="${pageContext.servletContext.contextPath}/fulltextsearch">Full Text Search</a></li>
 			</ul>
 		</sec:authorize>
+		
 
-		<div id="content" class="container">
+		
 			<tiles:insertAttribute name="content" />
-		</div>
+		
 
 		<hr>
 		
@@ -92,7 +95,7 @@
 			Powered by <a href="https://openshift.redhat.com/" target="_blank">OpenShift</a><br />
 
 	   </footer>
-		
+		</div>
 
 	</div>
 	<!-- /container -->

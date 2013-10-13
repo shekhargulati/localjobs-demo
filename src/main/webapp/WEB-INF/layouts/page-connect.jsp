@@ -66,6 +66,7 @@
 		</div>
 		<hr></hr>
 		<sec:authorize access="isAuthenticated()">
+		<div class="menu">
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="${pageContext.servletContext.contextPath}/home">Home</a></li>
 				<li><a href="${pageContext.servletContext.contextPath}/connect">Connections</a></li>
@@ -73,6 +74,7 @@
 				<li><a href="${pageContext.servletContext.contextPath}/search">Location Aware Search</a></li>
 				<li><a href="${pageContext.servletContext.contextPath}/fulltextsearch">Full Text Search</a></li>
 			</ul>
+			</div>
 		</sec:authorize>
 
 		<div id="content" class="container">
@@ -99,7 +101,15 @@
 	<script src="${pageContext.servletContext.contextPath}/resources/js/bootswatch.js"></script>
 	<script src="${pageContext.servletContext.contextPath}/resources/js/bootstrap-tab.js"></script>
 	<script src="${pageContext.servletContext.contextPath}/resources/js/bootstrap-scrollspy.js"></script>
-
+	<script type="text/javascript">
+		$("#menu li").click(function(event){
+			alert("hello123");
+			$("li .active").removeClass("active");
+			$(this).addClass("active");
+			$(this).tab('show');
+			
+		});
+	</script>
 </body>
 </html>
 

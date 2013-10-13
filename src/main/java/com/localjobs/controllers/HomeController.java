@@ -53,7 +53,6 @@ public class HomeController {
 
         Account account = accountRepository.findAccountByUsername(SecurityUtils.getCurrentLoggedInUsername());
 
-        System.out.println("Acccount " + account);
         double[] coordinates = CoordinateFinder.getLatLng(account.getAddress());
         double latitude = coordinates[0];
         double longitude = coordinates[1];
@@ -62,7 +61,6 @@ public class HomeController {
                 account.getSkills().toArray(new String[0]));
 
         logger.info("Found jobs" + recommendedJobs);
-        System.out.println("Found jobs " + recommendedJobs);
 
         model.addAttribute("recommendedJobs", recommendedJobs);
 

@@ -3,15 +3,15 @@
 
 <tiles-definitions>
 
-	<definition name="connect/status" extends="page-connect">
+	<definition name="connect/status" extends="page">
 		<put-attribute name="content" value="/WEB-INF/views/connect/status.jsp" />
 	</definition>
 
-	<definition name="connect/linkedinConnect" extends="page-connect">
+	<definition name="connect/linkedinConnect" extends="page">
 		<put-attribute name="content" value="/WEB-INF/views/connect/linkedinConnect.jsp" />
 	</definition>
 
-	<definition name="connect/linkedinConnected" extends="page-connect">
+	<definition name="connect/linkedinConnected" extends="page">
 		<put-attribute name="content" value="/WEB-INF/views/connect/linkedinConnected.jsp" />
 	</definition>
 
