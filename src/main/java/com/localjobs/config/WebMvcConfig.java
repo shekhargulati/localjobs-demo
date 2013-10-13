@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
+import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 import org.springframework.web.servlet.view.tiles2.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles2.TilesView;
 
@@ -21,6 +22,13 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Inject
     private ConnectionRepository connectionRepository;
+
+    @Bean
+    public MappingJacksonJsonView jsonView() {
+        MappingJacksonJsonView jsonView = new MappingJacksonJsonView();
+        jsonView.setPrefixJson(true);
+        return jsonView;
+    }
 
     @Bean
     public ViewResolver viewResolver() {

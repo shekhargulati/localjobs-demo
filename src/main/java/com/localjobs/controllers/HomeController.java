@@ -42,10 +42,8 @@ public class HomeController {
 
     @RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
     public String home(Principal currentUser, Model model) throws Exception {
-        model.addAttribute("connectionsToProviders", getConnectionRepository().findAllConnections());
-        model.addAttribute(accountRepository.findAccountByUsername(currentUser.getName()));
 
-        Account account = accountRepository.findAccountByUsername(SecurityUtils.getCurrentLoggedInUsername());
+        Account account = accountRepository.findAccountByUsername(currentUser.getName());
 
         double[] coordinates = CoordinateFinder.getLatLng(account.getAddress());
         double latitude = coordinates[0];
@@ -53,11 +51,13 @@ public class HomeController {
 
         List<JobVo> recommendedJobs = recommendedJobs(latitude, longitude, account.getSkills().toArray(new String[0]));
 
-        logger.info("Found jobs" + recommendedJobs);
-
-        model.addAttribute("recommendedJobs", recommendedJobs);
+        logger.info("Found jobs " + recommendedJobs.size());
 
         List<JobVo> appliedJobs = appliedJobs(latitude, longitude, SecurityUtils.getCurrentLoggedInUsername());
+
+        model.addAttribute("connectionsToProviders", getConnectionRepository().findAllConnections());
+        model.addAttribute(account);
+        model.addAttribute("recommendedJobs", recommendedJobs);
         model.addAttribute("appliedJobs", appliedJobs);
         return "home";
     }

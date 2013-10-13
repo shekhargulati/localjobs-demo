@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
@@ -47,5 +49,14 @@ public class DevDatasourceConfig implements DatasourceConfig {
     @Override
     public Database database() {
         return Database.H2;
+    }
+
+    @Bean
+    public RedisConnectionFactory redisConnectionFactory() {
+        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
+        jedisConnectionFactory.setHostName("localhost");
+        jedisConnectionFactory.setPort(6379);
+        jedisConnectionFactory.setUsePool(true);
+        return jedisConnectionFactory;
     }
 }

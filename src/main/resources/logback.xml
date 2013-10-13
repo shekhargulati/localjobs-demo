@@ -7,6 +7,8 @@
 		</encoder>
 	</appender>
 	
+	<logger name="org.springframework.cache" level="debug" />
+	
 	<root level="info">
 		<appender-ref ref="console" />
 	</root>

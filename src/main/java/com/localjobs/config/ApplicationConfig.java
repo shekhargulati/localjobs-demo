@@ -2,6 +2,7 @@ package com.localjobs.config;
 
 import javax.inject.Inject;
 
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,12 +11,15 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.JacksonJsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
 import com.localjobs.domain.Account;
 import com.localjobs.jpa.repository.AccountRepository;
@@ -27,6 +31,7 @@ import com.localjobs.mongodb.repository.JobRepository;
 @EnableJpaRepositories(basePackageClasses = AccountRepository.class)
 @EnableMongoRepositories(basePackageClasses = JobRepository.class)
 @EnableTransactionManagement
+@EnableCaching
 public class ApplicationConfig {
 
     @Inject
@@ -57,13 +62,6 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public MappingJacksonJsonView jsonView() {
-        MappingJacksonJsonView jsonView = new MappingJacksonJsonView();
-        jsonView.setPrefixJson(true);
-        return jsonView;
-    }
-
-    @Bean
     public static PropertySourcesPlaceholderConfigurer propertyPlaceHolderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
     }
@@ -72,5 +70,22 @@ public class ApplicationConfig {
     public MongoTemplate mongoTemplate() throws Exception {
         MongoTemplate mongoTemplate = new MongoTemplate(datasourceConfig.mongoDbFactory());
         return mongoTemplate;
+    }
+
+    @Bean
+    public RedisTemplate<String, Account> redisTemplate() {
+        RedisTemplate<String, Account> template = new RedisTemplate<>();
+        template.setConnectionFactory(datasourceConfig.redisConnectionFactory());
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new JacksonJsonRedisSerializer<>(Account.class));
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(new JacksonJsonRedisSerializer<>(Account.class));
+        return template;
+    }
+    
+    @Bean
+    public RedisCacheManager cacheManager(){
+        RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate());
+        return cacheManager;
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.authentication.UserCredentials;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.orm.jpa.vendor.Database;
 
 import com.mongodb.Mongo;
@@ -57,5 +59,16 @@ public class OpenShiftDatasourceConfig implements DatasourceConfig {
     @Override
     public Database database() {
         return Database.POSTGRESQL;
+    }
+    
+    @Override
+    @Bean
+    public RedisConnectionFactory redisConnectionFactory() {
+        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
+        jedisConnectionFactory.setHostName(System.getenv("OPENSHIFT_REDIS_HOST"));
+        jedisConnectionFactory.setPort(Integer.valueOf(System.getenv("OPENSHIFT_REDIS_PORT")));
+        jedisConnectionFactory.setPassword(System.getenv("REDIS_PASSWORD"));
+        jedisConnectionFactory.setUsePool(true);
+        return jedisConnectionFactory;
     }
 }

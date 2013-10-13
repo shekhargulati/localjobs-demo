@@ -14,11 +14,6 @@
 <meta name="author" content="">
 
 <script src="${pageContext.servletContext.contextPath}/resources/js/jquery.js"></script>
-<link rel="stylesheet" href="<c:url value="${pageContext.servletContext.contextPath}/resources/page.css" />"
-	type="text/css" media="screen" />
-<link rel="stylesheet"
-	href="<c:url value="${pageContext.servletContext.contextPath}/resources/messages/messages.css" />"
-	type="text/css" media="screen" />
 
 <link href="${pageContext.servletContext.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
 
