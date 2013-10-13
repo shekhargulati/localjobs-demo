@@ -2,12 +2,11 @@ package com.localjobs.googleapi;
 
 public class Geometry {
 
-	public Location location;
+    public Location location;
 
-	@Override
-	public String toString() {
-		return "Geometry [location=" + location + "]";
-	}
-	
-	
+    @Override
+    public String toString() {
+        return "Geometry [location=" + location + "]";
+    }
+
 }

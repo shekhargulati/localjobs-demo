@@ -8,32 +8,32 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public class AbstractEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
+    @Override
+    public boolean equals(Object obj) {
 
-		if (this == obj) {
-			return true;
-		}
+        if (this == obj) {
+            return true;
+        }
 
-		if (this.id == null || obj == null || !(this.getClass().equals(obj.getClass()))) {
-			return false;
-		}
+        if (this.id == null || obj == null || !(this.getClass().equals(obj.getClass()))) {
+            return false;
+        }
 
-		AbstractEntity that = (AbstractEntity) obj;
+        AbstractEntity that = (AbstractEntity) obj;
 
-		return this.id.equals(that.getId());
-	}
+        return this.id.equals(that.getId());
+    }
 
-	@Override
-	public int hashCode() {
-		return id == null ? 0 : id.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return id == null ? 0 : id.hashCode();
+    }
 }

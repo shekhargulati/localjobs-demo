@@ -10,14 +10,14 @@ import com.localjobs.utils.SecurityUtils;
 @Controller
 public class SigninController {
 
-	@RequestMapping(value = "/signin", method = RequestMethod.GET)
-	public String signin() throws Exception {
-		String username = SecurityUtils.getCurrentLoggedInUsername();
+    @RequestMapping(value = "/signin", method = RequestMethod.GET)
+    public String signin() throws Exception {
+        String username = SecurityUtils.getCurrentLoggedInUsername();
 
-		if (StringUtils.hasLength(username) && !"anonymousUser".equals(username)) {
-			return "redirect:/home";
-		}
-		return "signin";
+        if (StringUtils.hasLength(username) && !"anonymousUser".equals(username)) {
+            return "redirect:/home";
+        }
+        return "signin";
 
-	}
+    }
 }

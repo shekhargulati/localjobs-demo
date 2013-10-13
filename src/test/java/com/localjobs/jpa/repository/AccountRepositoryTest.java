@@ -23,37 +23,36 @@ import com.localjobs.jpa.repository.AccountRepository;
 @Transactional
 public class AccountRepositoryTest {
 
-	@Inject
-	AccountRepository accountRepository;
+    @Inject
+    AccountRepository accountRepository;
 
-	@Test
-	public void accountRepositoryShouldBeNotNull() {
-		assertNotNull(accountRepository);
-	}
+    @Test
+    public void accountRepositoryShouldBeNotNull() {
+        assertNotNull(accountRepository);
+    }
 
-	@Test
-	public void shouldSaveAccount() {
-		Account account = newAccount();
+    @Test
+    public void shouldSaveAccount() {
+        Account account = newAccount();
 
-		accountRepository.save(account);
+        accountRepository.save(account);
 
-		assertNotNull(account.getId());
-	}
+        assertNotNull(account.getId());
+    }
 
-	@Test
-	public void testFindAccountByUsername() {
-		Account account = newAccount();
+    @Test
+    public void testFindAccountByUsername() {
+        Account account = newAccount();
 
-		accountRepository.save(account);
-		
-		assertNotNull(accountRepository.findAccountByUsername("testuser"));
-		
-	}
-	
+        accountRepository.save(account);
 
-	private Account newAccount() {
-		return new Account("testuser", "password", "Test User",
-				"123", "Test Address", Arrays.asList("skill1", "skill2"));
-	}
+        assertNotNull(accountRepository.findAccountByUsername("testuser"));
+
+    }
+
+    private Account newAccount() {
+        return new Account("testuser", "password", "Test User", "123", "Test Address",
+                Arrays.asList("skill1", "skill2"));
+    }
 
 }

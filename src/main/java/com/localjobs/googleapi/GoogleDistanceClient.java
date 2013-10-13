@@ -16,53 +16,46 @@ import com.google.gson.Gson;
 @Component
 public class GoogleDistanceClient {
 
-	// Create our transport.
-	private static final HttpTransport transport = new ApacheHttpTransport();
+    // Create our transport.
+    private static final HttpTransport transport = new ApacheHttpTransport();
 
-	private static final String DIRECTION_SEARCH_URL = "http://maps.googleapis.com/maps/api/distancematrix/json?";
+    private static final String DIRECTION_SEARCH_URL = "http://maps.googleapis.com/maps/api/distancematrix/json?";
 
-	public DistanceResponse findDirections(double[] origins,
-			double[] destinations) {
-		try {
-			System.out.println("Finding direction for origin " + origins
-					+ " , and destination " + destinations);
+    public DistanceResponse findDirections(double[] origins, double[] destinations) {
+        try {
+            System.out.println("Finding direction for origin " + origins + " , and destination " + destinations);
 
-			HttpRequestFactory httpRequestFactory = createRequestFactory(transport);
-			HttpRequest request = httpRequestFactory
-					.buildGetRequest(new GenericUrl(DIRECTION_SEARCH_URL));
-			// request.url.put("key", API_KEY);
-			request.url.put("origins", origins[0] + "," + origins[1]);
-			request.url.put("destinations", destinations[0] + ","
-					+ destinations[1]);
-			request.url.put("sensor", "false");
+            HttpRequestFactory httpRequestFactory = createRequestFactory(transport);
+            HttpRequest request = httpRequestFactory.buildGetRequest(new GenericUrl(DIRECTION_SEARCH_URL));
+            // request.url.put("key", API_KEY);
+            request.url.put("origins", origins[0] + "," + origins[1]);
+            request.url.put("destinations", destinations[0] + "," + destinations[1]);
+            request.url.put("sensor", "false");
 
-			System.out.println(request.url.toString());
-			String json = request.execute().parseAsString();
+            System.out.println(request.url.toString());
+            String json = request.execute().parseAsString();
 
-			System.out.println(json);
-			Gson gson = new Gson();
-			DistanceResponse response = gson.fromJson(json,
-					DistanceResponse.class);
-			return response;
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+            System.out.println(json);
+            Gson gson = new Gson();
+            DistanceResponse response = gson.fromJson(json, DistanceResponse.class);
+            return response;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public static HttpRequestFactory createRequestFactory(
-			final HttpTransport transport) {
+    public static HttpRequestFactory createRequestFactory(final HttpTransport transport) {
 
-		return transport.createRequestFactory(new HttpRequestInitializer() {
-			public void initialize(HttpRequest request) {
-				GoogleHeaders headers = new GoogleHeaders();
-				headers.setApplicationName("JobsNearYou");
-				request.headers = headers;
-				JsonHttpParser parser = new JsonHttpParser();
-				parser.jsonFactory = new JacksonFactory();
-				request.addParser(parser);
-			}
-		});
-	}
+        return transport.createRequestFactory(new HttpRequestInitializer() {
+            public void initialize(HttpRequest request) {
+                GoogleHeaders headers = new GoogleHeaders();
+                headers.setApplicationName("JobsNearYou");
+                request.headers = headers;
+                JsonHttpParser parser = new JsonHttpParser();
+                parser.jsonFactory = new JacksonFactory();
+                request.addParser(parser);
+            }
+        });
+    }
 
 }

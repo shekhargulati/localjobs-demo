@@ -1,30 +1,29 @@
 package com.localjobs.googleapi;
 
 public class Duration {
-	public String text;
-	
-	public String value;
+    public String text;
 
-	@Override
-	public String toString() {
-		return "Duration [text=" + text + ", value=" + value + "]";
-	}
+    public String value;
 
-	public String getText() {
-		return text;
-	}
+    @Override
+    public String toString() {
+        return "Duration [text=" + text + ", value=" + value + "]";
+    }
 
-	public void setText(String text) {
-		this.text = text;
-	}
+    public String getText() {
+        return text;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public void setText(String text) {
+        this.text = text;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
-	
-	
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
 }

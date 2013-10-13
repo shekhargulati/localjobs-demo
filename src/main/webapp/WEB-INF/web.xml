@@ -16,11 +16,6 @@
 		<param-value>com.localjobs.config</param-value>
 	</context-param>
 
-	<!-- Use the simplified configuration by default. -->
-	<context-param>
-		<param-name>spring.profiles.default</param-name>
-		<param-value>openshift,web</param-value>
-	</context-param>
 
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
@@ -34,10 +29,6 @@
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value></param-value>
-		</init-param>
-		<init-param>
-			<param-name>spring.profiles.default</param-name>
-			<param-value>openshift,web</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
@@ -56,7 +47,7 @@
 		<servlet-name>search</servlet-name>
 		<url-pattern>/search</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>fulltextsearch</servlet-name>
 		<jsp-file>/fulltextsearch.jsp</jsp-file>

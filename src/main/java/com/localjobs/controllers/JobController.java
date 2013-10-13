@@ -41,123 +41,111 @@ import com.localjobs.utils.SecurityUtils;
 @RequestMapping("/jobs")
 public class JobController {
 
-	@Inject
-	private LocalJobsService localJobsService;
+    @Inject
+    private LocalJobsService localJobsService;
 
-	@Inject
-	private MongoTemplate mongoTemplate;
+    @Inject
+    private MongoTemplate mongoTemplate;
 
-	@Inject
-	private AccountRepository accountRepository;
-	
-	@Inject
-	private GoogleDistanceClient googleDistanceClient;
-	
-	@Inject
-	private FullTextSearchService fullTextSearchService;
+    @Inject
+    private AccountRepository accountRepository;
 
-	public JobController() {
-	}
+    @Inject
+    private GoogleDistanceClient googleDistanceClient;
 
-	@RequestMapping(value = "nearme/{skills}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public List<GeoResult<Job>> allJobsNearToLocationWithSkill(
-			@PathVariable("skills") String[] skills,
-			@RequestParam("longitude") double longitude,
-			@RequestParam("latitude") double latitude) throws Exception {
+    @Inject
+    private FullTextSearchService fullTextSearchService;
 
-		Metric metric = Metrics.KILOMETERS;
-		Query skillsWhereClause = Query.query(Criteria.where("skills").in(
-				skills));
-		NearQuery nearQuery = NearQuery
-				.near(new Point(longitude, latitude), metric)
-				.query(skillsWhereClause).num(10);
-		GeoResults<Job> geoResults = mongoTemplate
-				.geoNear(nearQuery, Job.class);
-		List<GeoResult<Job>> jobs = geoResults.getContent();
-		return jobs;
-	}
+    public JobController() {
+    }
 
-	@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody
-	List<Job> allJobs() {
-		List<Job> jobs = localJobsService.findAllJobs();
-		return jobs;
-	}
+    @RequestMapping(value = "nearme/{skills}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public List<GeoResult<Job>> allJobsNearToLocationWithSkill(@PathVariable("skills") String[] skills,
+            @RequestParam("longitude") double longitude, @RequestParam("latitude") double latitude) throws Exception {
 
-	@RequestMapping(value = "/{jobId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody
-	Job oneJob(@PathVariable("jobId") String jobId) {
-		Job job = localJobsService.findOneJob(jobId);
-		return job;
-	}
+        Metric metric = Metrics.KILOMETERS;
+        Query skillsWhereClause = Query.query(Criteria.where("skills").in(skills));
+        NearQuery nearQuery = NearQuery.near(new Point(longitude, latitude), metric).query(skillsWhereClause).num(10);
+        GeoResults<Job> geoResults = mongoTemplate.geoNear(nearQuery, Job.class);
+        List<GeoResult<Job>> jobs = geoResults.getContent();
+        return jobs;
+    }
 
-	@RequestMapping(value = "/jobs", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody
-	Job createNewJob(@Valid Job job) {
-		localJobsService.saveJob(job);
-		return job;
-	}
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    List<Job> allJobs() {
+        List<Job> jobs = localJobsService.findAllJobs();
+        return jobs;
+    }
 
-	@RequestMapping(value = "/{jobId}", method = RequestMethod.DELETE)
-	public void deleteJob(@PathVariable("jobId") String jobId) {
-		Job job = localJobsService.findOneJob(jobId);
-		localJobsService.deleteJob(job);
-	}
+    @RequestMapping(value = "/{jobId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    Job oneJob(@PathVariable("jobId") String jobId) {
+        Job job = localJobsService.findOneJob(jobId);
+        return job;
+    }
 
-	@RequestMapping("/jobsforme")
-	public String allJobsForMe(Model model) throws Exception {
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Type", "application/json; charset=utf-8");
+    @RequestMapping(value = "/jobs", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    Job createNewJob(@Valid Job job) {
+        localJobsService.saveJob(job);
+        return job;
+    }
 
-		Account account = accountRepository.findAccountByUsername(SecurityUtils
-				.getCurrentLoggedInUsername());
-		double[] coordinates = CoordinateFinder.getLatLng(account.getAddress());
-		if (coordinates == null || coordinates.length == 0) {
-			return "redirect:/myprofile";
-		}
+    @RequestMapping(value = "/{jobId}", method = RequestMethod.DELETE)
+    public void deleteJob(@PathVariable("jobId") String jobId) {
+        Job job = localJobsService.findOneJob(jobId);
+        localJobsService.deleteJob(job);
+    }
 
-		double latitude = coordinates[0];
-		double longitude = coordinates[1];
-		List<JobDistanceVo> jobsWithDistance = findJobsWithLocation(latitude,
-				longitude);
-		model.addAttribute("jobs", jobsWithDistance);
-		return "jobs";
-	}
+    @RequestMapping("/jobsforme")
+    public String allJobsForMe(Model model) throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
 
-	@RequestMapping(value = "/apply/{jobId}", method = RequestMethod.POST)
-	public String applyJob(@PathVariable("jobId") String jobId) {
-		String username = SecurityUtils.getCurrentLoggedInUsername();
-		localJobsService.appyJob(jobId, username);
-		return "redirect:/home";
-	}
+        Account account = accountRepository.findAccountByUsername(SecurityUtils.getCurrentLoggedInUsername());
+        double[] coordinates = CoordinateFinder.getLatLng(account.getAddress());
+        if (coordinates == null || coordinates.length == 0) {
+            return "redirect:/myprofile";
+        }
 
-	
-	private List<JobDistanceVo> findJobsWithLocation(double latitude,
-			double longitude) {
-		List<Job> jobs = localJobsService.findAllJobsNear(latitude, longitude);
-		List<JobDistanceVo> locaJobsWithDistance = new ArrayList<JobDistanceVo>();
-		for (Job localJob : jobs) {
-			DistanceResponse response = googleDistanceClient.findDirections(
-					localJob.getLocation(),
-					new double[] { latitude, longitude });
-			JobDistanceVo linkedinJobWithDistance = new JobDistanceVo(localJob,
-					response.rows[0].elements[0].distance,
-					response.rows[0].elements[0].duration);
-			locaJobsWithDistance.add(linkedinJobWithDistance);
-		}
-		return locaJobsWithDistance;
-	}
-	
-	@RequestMapping(value = "/fulltext/{query}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public List<Job> fullTextSearch(@PathVariable("query") String query) {
-		System.out.println("Full text search query is .. " + query);
-		Set<String> documentIds = fullTextSearchService.search(query);
-		if (CollectionUtils.isEmpty(documentIds)) {
-			return new ArrayList<Job>();
-		}
-		Query idsQuery = Query.query(Criteria.where("_id").in(documentIds));
-		return mongoTemplate.find(idsQuery, Job.class);
-	}
+        double latitude = coordinates[0];
+        double longitude = coordinates[1];
+        List<JobDistanceVo> jobsWithDistance = findJobsWithLocation(latitude, longitude);
+        model.addAttribute("jobs", jobsWithDistance);
+        return "jobs";
+    }
+
+    @RequestMapping(value = "/apply/{jobId}", method = RequestMethod.POST)
+    public String applyJob(@PathVariable("jobId") String jobId) {
+        String username = SecurityUtils.getCurrentLoggedInUsername();
+        localJobsService.appyJob(jobId, username);
+        return "redirect:/home";
+    }
+
+    private List<JobDistanceVo> findJobsWithLocation(double latitude, double longitude) {
+        List<Job> jobs = localJobsService.findAllJobsNear(latitude, longitude);
+        List<JobDistanceVo> locaJobsWithDistance = new ArrayList<JobDistanceVo>();
+        for (Job localJob : jobs) {
+            DistanceResponse response = googleDistanceClient.findDirections(localJob.getLocation(), new double[] {
+                    latitude, longitude });
+            JobDistanceVo linkedinJobWithDistance = new JobDistanceVo(localJob, response.rows[0].elements[0].distance,
+                    response.rows[0].elements[0].duration);
+            locaJobsWithDistance.add(linkedinJobWithDistance);
+        }
+        return locaJobsWithDistance;
+    }
+
+    @RequestMapping(value = "/fulltext/{query}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public List<Job> fullTextSearch(@PathVariable("query") String query) {
+        System.out.println("Full text search query is .. " + query);
+        Set<String> documentIds = fullTextSearchService.search(query);
+        if (CollectionUtils.isEmpty(documentIds)) {
+            return new ArrayList<Job>();
+        }
+        Query idsQuery = Query.query(Criteria.where("_id").in(documentIds));
+        return mongoTemplate.find(idsQuery, Job.class);
+    }
 }

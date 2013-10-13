@@ -25,75 +25,71 @@ import com.localjobs.utils.SecurityUtils;
 @Controller
 public class HomeController {
 
-	private final Provider<ConnectionRepository> connectionRepositoryProvider;
+    private final Provider<ConnectionRepository> connectionRepositoryProvider;
 
-	private final AccountRepository accountRepository;
-	
-	private LocalJobsService localJobsService;
-	
-	@Inject
-	private GoogleDistanceClient googleDistanceClient;
+    private final AccountRepository accountRepository;
 
-	@Inject
-	public HomeController(
-			Provider<ConnectionRepository> connectionRepositoryProvider,
-			AccountRepository accountRepository,LocalJobsService localJobsService) {
-		this.connectionRepositoryProvider = connectionRepositoryProvider;
-		this.accountRepository = accountRepository;
-		this.localJobsService = localJobsService;
-	}
+    private LocalJobsService localJobsService;
 
-	@RequestMapping(value = {"/","/home"}, method = RequestMethod.GET)
-	public String home(Principal currentUser, Model model)  throws Exception{
-		model.addAttribute("connectionsToProviders", getConnectionRepository()
-				.findAllConnections());
-		model.addAttribute(accountRepository.findAccountByUsername(currentUser
-				.getName()));
-		
-		Account account = accountRepository.findAccountByUsername(SecurityUtils
-				.getCurrentLoggedInUsername());
-		
-		double[] coordinates = CoordinateFinder.getLatLng(account.getAddress());
-		double latitude = coordinates[0];
-		double longitude = coordinates[1];
-		
-		List<JobDistanceVo> recommendedJobs = recommendedJobs(latitude,longitude,account.getSkills().toArray(new String[0]));
-		
-		model.addAttribute("recommendedJobs", recommendedJobs);
-		
-		List<JobDistanceVo> appliedJobs = appliedJobs(latitude,longitude,SecurityUtils.getCurrentLoggedInUsername());
-		model.addAttribute("appliedJobs", appliedJobs);
-		return "home";
-	}
+    @Inject
+    private GoogleDistanceClient googleDistanceClient;
 
-	private List<JobDistanceVo> appliedJobs(double latitude, double longitude, String user) {
-		List<Job> jobs = localJobsService.appliedJobs(user);
-		return toJobDistanceVo(latitude, longitude, jobs);
-	}
+    @Inject
+    public HomeController(Provider<ConnectionRepository> connectionRepositoryProvider,
+            AccountRepository accountRepository, LocalJobsService localJobsService) {
+        this.connectionRepositoryProvider = connectionRepositoryProvider;
+        this.accountRepository = accountRepository;
+        this.localJobsService = localJobsService;
+    }
 
-	private List<JobDistanceVo> recommendedJobs(double latitude,double longitude,String[] skills) throws Exception{
-		
-		List<Job> jobs = localJobsService.recommendJobs(latitude, longitude, skills, SecurityUtils
-				.getCurrentLoggedInUsername());
-		return toJobDistanceVo(latitude, longitude, jobs);
-	}
+    @RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
+    public String home(Principal currentUser, Model model) throws Exception {
+        model.addAttribute("connectionsToProviders", getConnectionRepository().findAllConnections());
+        model.addAttribute(accountRepository.findAccountByUsername(currentUser.getName()));
 
-	private List<JobDistanceVo> toJobDistanceVo(double latitude,
-			double longitude, List<Job> jobs) {
-		List<JobDistanceVo> jobsDistanceVo = new ArrayList<JobDistanceVo>();
-		for (Job job : jobs) {
-			double[] origin = {job.getLocation()[1], job.getLocation()[0]};
-			double[] destination = new double[] { latitude ,longitude};
-			DistanceResponse response = googleDistanceClient.findDirections(origin, destination);
-			JobDistanceVo vo = new JobDistanceVo(job,
-					response.rows[0].elements[0].distance,
-					response.rows[0].elements[0].duration);
-			jobsDistanceVo.add(vo);
-		}
-		return jobsDistanceVo;
-	}
-	private ConnectionRepository getConnectionRepository() {
-		return connectionRepositoryProvider.get();
-	}
-	
+        Account account = accountRepository.findAccountByUsername(SecurityUtils.getCurrentLoggedInUsername());
+
+        double[] coordinates = CoordinateFinder.getLatLng(account.getAddress());
+        double latitude = coordinates[0];
+        double longitude = coordinates[1];
+
+        List<JobDistanceVo> recommendedJobs = recommendedJobs(latitude, longitude,
+                account.getSkills().toArray(new String[0]));
+
+        model.addAttribute("recommendedJobs", recommendedJobs);
+
+        List<JobDistanceVo> appliedJobs = appliedJobs(latitude, longitude, SecurityUtils.getCurrentLoggedInUsername());
+        model.addAttribute("appliedJobs", appliedJobs);
+        return "home";
+    }
+
+    private List<JobDistanceVo> appliedJobs(double latitude, double longitude, String user) {
+        List<Job> jobs = localJobsService.appliedJobs(user);
+        return toJobDistanceVo(latitude, longitude, jobs);
+    }
+
+    private List<JobDistanceVo> recommendedJobs(double latitude, double longitude, String[] skills) throws Exception {
+
+        List<Job> jobs = localJobsService.recommendJobs(latitude, longitude, skills,
+                SecurityUtils.getCurrentLoggedInUsername());
+        return toJobDistanceVo(latitude, longitude, jobs);
+    }
+
+    private List<JobDistanceVo> toJobDistanceVo(double latitude, double longitude, List<Job> jobs) {
+        List<JobDistanceVo> jobsDistanceVo = new ArrayList<JobDistanceVo>();
+        for (Job job : jobs) {
+            double[] origin = { job.getLocation()[1], job.getLocation()[0] };
+            double[] destination = new double[] { latitude, longitude };
+            DistanceResponse response = googleDistanceClient.findDirections(origin, destination);
+            JobDistanceVo vo = new JobDistanceVo(job, response.rows[0].elements[0].distance,
+                    response.rows[0].elements[0].duration);
+            jobsDistanceVo.add(vo);
+        }
+        return jobsDistanceVo;
+    }
+
+    private ConnectionRepository getConnectionRepository() {
+        return connectionRepositoryProvider.get();
+    }
+
 }

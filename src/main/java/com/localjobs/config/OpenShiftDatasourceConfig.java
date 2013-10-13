@@ -15,47 +15,47 @@ import com.mongodb.Mongo;
 
 @Configuration
 @Profile("openshift")
-public class OpenShiftDatasourceConfig implements DatasourceConfig{
+public class OpenShiftDatasourceConfig implements DatasourceConfig {
 
-	@Bean(destroyMethod = "close")
-	public DataSource dataSource() {
-		String username = System.getenv("OPENSHIFT_MYSQL_DB_USERNAME");
-		String password = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
-		String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
-		String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
+    @Bean(destroyMethod = "close")
+    public DataSource dataSource() {
+        String username = System.getenv("OPENSHIFT_POSTGRESQL_DB_USERNAME");
+        String password = System.getenv("OPENSHIFT_POSTGRESQL_DB_PASSWORD");
+        String host = System.getenv("OPENSHIFT_POSTGRESQL_DB_HOST");
+        String port = System.getenv("OPENSHIFT_POSTGRESQL_DB_PORT");
         String databaseName = System.getenv("OPENSHIFT_APP_NAME");
-		String url = "jdbc:mysql://" + host + ":" + port + "/"+databaseName;
-		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl(url);
-		dataSource.setUsername(username);
-		dataSource.setPassword(password);
-		dataSource.setTestOnBorrow(true);
-		dataSource.setTestOnReturn(true);
-		dataSource.setTestWhileIdle(true);
-		dataSource.setTimeBetweenEvictionRunsMillis(1800000);
-		dataSource.setNumTestsPerEvictionRun(3);
-		dataSource.setMinEvictableIdleTimeMillis(1800000);
-		dataSource.setValidationQuery("SELECT version()");
+        String url = "jdbc:postgresql://" + host + ":" + port + "/" + databaseName;
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName("com.postgresql.Driver");
+        dataSource.setUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+        dataSource.setTestOnBorrow(true);
+        dataSource.setTestOnReturn(true);
+        dataSource.setTestWhileIdle(true);
+        dataSource.setTimeBetweenEvictionRunsMillis(1800000);
+        dataSource.setNumTestsPerEvictionRun(3);
+        dataSource.setMinEvictableIdleTimeMillis(1800000);
+        dataSource.setValidationQuery("SELECT version()");
 
-		return dataSource;
-	}
-	
-	@Bean
-	public MongoDbFactory mongoDbFactory() throws Exception{
-		String openshiftMongoDbHost = System.getenv("OPENSHIFT_MONGODB_DB_HOST");
-		int openshiftMongoDbPort = Integer.parseInt(System.getenv("OPENSHIFT_MONGODB_DB_PORT"));
-		String username = System.getenv("OPENSHIFT_MONGODB_DB_USERNAME");
-		String password = System.getenv("OPENSHIFT_MONGODB_DB_PASSWORD");
-		Mongo mongo = new Mongo(openshiftMongoDbHost, openshiftMongoDbPort);
-		UserCredentials userCredentials = new UserCredentials(username,password);
-		String databaseName = System.getenv("OPENSHIFT_APP_NAME");
-		MongoDbFactory mongoDbFactory = new SimpleMongoDbFactory(mongo, databaseName, userCredentials);
-		return mongoDbFactory;
-	}
+        return dataSource;
+    }
 
-	@Override
-	public Database database() {
-		return Database.MYSQL;
-	}
+    @Bean
+    public MongoDbFactory mongoDbFactory() throws Exception {
+        String openshiftMongoDbHost = System.getenv("OPENSHIFT_MONGODB_DB_HOST");
+        int openshiftMongoDbPort = Integer.parseInt(System.getenv("OPENSHIFT_MONGODB_DB_PORT"));
+        String username = System.getenv("OPENSHIFT_MONGODB_DB_USERNAME");
+        String password = System.getenv("OPENSHIFT_MONGODB_DB_PASSWORD");
+        Mongo mongo = new Mongo(openshiftMongoDbHost, openshiftMongoDbPort);
+        UserCredentials userCredentials = new UserCredentials(username, password);
+        String databaseName = System.getenv("OPENSHIFT_APP_NAME");
+        MongoDbFactory mongoDbFactory = new SimpleMongoDbFactory(mongo, databaseName, userCredentials);
+        return mongoDbFactory;
+    }
+
+    @Override
+    public Database database() {
+        return Database.POSTGRESQL;
+    }
 }

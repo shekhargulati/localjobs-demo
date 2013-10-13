@@ -18,16 +18,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles("dev")
 public class ApplicationConfigTest {
 
-	@PersistenceContext
-	EntityManager entityManager;
+    @PersistenceContext
+    EntityManager entityManager;
 
-	@Inject
-	private MongoTemplate mongoTemplate;
+    @Inject
+    private MongoTemplate mongoTemplate;
 
-	@Test
-	public void entityManagerAndMongoTemplateShouldBeNotNull() {
-		assertNotNull(entityManager);
-		assertNotNull(mongoTemplate);
-	}
+    @Test
+    public void entityManagerAndMongoTemplateShouldBeNotNull() {
+        assertNotNull(entityManager);
+        assertNotNull(mongoTemplate);
+    }
 
 }

@@ -1,14 +1,13 @@
 package com.localjobs.googleapi;
 
 public class Location {
-	public double lat;
+    public double lat;
 
-	public double lng;
+    public double lng;
 
-	@Override
-	public String toString() {
-		return "Location [lat=" + lat + ", lng=" + lng + "]";
-	}
+    @Override
+    public String toString() {
+        return "Location [lat=" + lat + ", lng=" + lng + "]";
+    }
 
-	
 }

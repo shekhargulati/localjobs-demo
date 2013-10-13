@@ -7,11 +7,10 @@ import org.springframework.orm.jpa.vendor.Database;
 
 public interface DatasourceConfig {
 
-	DataSource dataSource();
+    DataSource dataSource();
 
-	MongoDbFactory mongoDbFactory() throws Exception;
+    MongoDbFactory mongoDbFactory() throws Exception;
 
-	Database database();
+    Database database();
 
-	
 }

@@ -153,7 +153,7 @@ div.jobBox {
 	<script type="text/javascript"
 		src="${pageContext.servletContext.contextPath}/resources/js/jquery.loadmask.min.js"></script>
 	<script type="text/javascript"
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATvS5bY-3CkeiedEWtr5WFHEQFOi-9uYs&sensor=true">
+		src="https://maps.googleapis.com/maps/api/js?sensor=true">
 		
 	</script>
 	<script src="${pageContext.servletContext.contextPath}/resources/js/bootstrap.min.js"></script>

@@ -10,6 +10,6 @@ import com.localjobs.domain.Job;
 @Repository
 public interface JobRepository extends PagingAndSortingRepository<Job, String> {
 
-	List<Job> findAll();
-	
+    List<Job> findAll();
+
 }

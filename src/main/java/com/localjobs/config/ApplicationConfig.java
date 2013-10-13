@@ -29,50 +29,48 @@ import com.localjobs.mongodb.repository.JobRepository;
 @EnableTransactionManagement
 public class ApplicationConfig {
 
-	@Inject
-	private DatasourceConfig datasourceConfig;
+    @Inject
+    private DatasourceConfig datasourceConfig;
 
-	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 
-		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-		vendorAdapter.setDatabase(datasourceConfig.database());
-		vendorAdapter.setGenerateDdl(true);
-		vendorAdapter.setShowSql(true);
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setDatabase(datasourceConfig.database());
+        vendorAdapter.setGenerateDdl(true);
+        vendorAdapter.setShowSql(true);
 
-		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-		factory.setJpaVendorAdapter(vendorAdapter);
-		factory.setPackagesToScan(Account.class.getPackage().getName());
-		factory.setDataSource(datasourceConfig.dataSource());
+        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+        factory.setJpaVendorAdapter(vendorAdapter);
+        factory.setPackagesToScan(Account.class.getPackage().getName());
+        factory.setDataSource(datasourceConfig.dataSource());
 
-		return factory;
-	}
+        return factory;
+    }
 
-	@Bean
-	public PlatformTransactionManager transactionManager() {
+    @Bean
+    public PlatformTransactionManager transactionManager() {
 
-		JpaTransactionManager txManager = new JpaTransactionManager();
-		txManager.setEntityManagerFactory(entityManagerFactory().getObject());
-		return txManager;
-	}
+        JpaTransactionManager txManager = new JpaTransactionManager();
+        txManager.setEntityManagerFactory(entityManagerFactory().getObject());
+        return txManager;
+    }
 
-	@Bean
-	public MappingJacksonJsonView jsonView() {
-		MappingJacksonJsonView jsonView = new MappingJacksonJsonView();
-		jsonView.setPrefixJson(true);
-		return jsonView;
-	}
+    @Bean
+    public MappingJacksonJsonView jsonView() {
+        MappingJacksonJsonView jsonView = new MappingJacksonJsonView();
+        jsonView.setPrefixJson(true);
+        return jsonView;
+    }
 
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyPlaceHolderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 
-	@Bean
-	public static PropertySourcesPlaceholderConfigurer propertyPlaceHolderConfigurer() {
-		return new PropertySourcesPlaceholderConfigurer();
-	}
-
-	@Bean
-	public MongoTemplate mongoTemplate() throws Exception {
-		MongoTemplate mongoTemplate = new MongoTemplate(
-				datasourceConfig.mongoDbFactory());
-		return mongoTemplate;
-	}
+    @Bean
+    public MongoTemplate mongoTemplate() throws Exception {
+        MongoTemplate mongoTemplate = new MongoTemplate(datasourceConfig.mongoDbFactory());
+        return mongoTemplate;
+    }
 }

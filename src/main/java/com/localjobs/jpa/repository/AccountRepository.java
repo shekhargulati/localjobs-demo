@@ -4,8 +4,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.localjobs.domain.Account;
 
-public interface AccountRepository extends CrudRepository<Account, Long>{
+public interface AccountRepository extends CrudRepository<Account, Long> {
 
-	Account findAccountByUsername(String username);
-	
+    Account findAccountByUsername(String username);
+
 }

@@ -6,85 +6,84 @@ import com.localjobs.googleapi.Duration;
 
 public class JobDistanceVo {
 
-	private String jobId;
-	private String jobTitle;
-	private String companyName;
-	private String[] skills;
-	private String address;
+    private String jobId;
+    private String jobTitle;
+    private String companyName;
+    private String[] skills;
+    private String address;
 
-	private String distance;
-	private String duration;
+    private String distance;
+    private String duration;
 
-	public JobDistanceVo() {
-		// TODO Auto-generated constructor stub
-	}
+    public JobDistanceVo() {
+        // TODO Auto-generated constructor stub
+    }
 
-	public JobDistanceVo(Job job, Distance distance, Duration duration) {
-		this.jobId = job.getId();
-		this.jobTitle = job.getJobTitle();
-		this.skills = job.getSkills();
-		this.companyName = job.getCompany().getCompanyName();
-		this.address = job.getFormattedAddress();
-		if (distance != null) {
-			this.distance = distance.getText();
-		}
-		if(duration != null){
-			this.duration = duration.getText();
-		}
-		
-	}
+    public JobDistanceVo(Job job, Distance distance, Duration duration) {
+        this.jobId = job.getId();
+        this.jobTitle = job.getJobTitle();
+        this.skills = job.getSkills();
+        this.companyName = job.getCompany().getCompanyName();
+        this.address = job.getFormattedAddress();
+        if (distance != null) {
+            this.distance = distance.getText();
+        }
+        if (duration != null) {
+            this.duration = duration.getText();
+        }
 
-	public void setJobId(String jobId) {
-		this.jobId = jobId;
-	}
+    }
 
-	public String getJobId() {
-		return jobId;
-	}
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
+    }
 
-	public String getCompanyName() {
-		return companyName;
-	}
+    public String getJobId() {
+        return jobId;
+    }
 
-	public String getJobTitle() {
-		return jobTitle;
-	}
+    public String getCompanyName() {
+        return companyName;
+    }
 
-	public void setJobTitle(String jobTitle) {
-		this.jobTitle = jobTitle;
-	}
+    public String getJobTitle() {
+        return jobTitle;
+    }
 
-	public String[] getSkills() {
-		return skills;
-	}
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
 
-	public void setSkills(String[] skills) {
-		this.skills = skills;
-	}
+    public String[] getSkills() {
+        return skills;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public void setSkills(String[] skills) {
+        this.skills = skills;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public String getDistance() {
-		return distance;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public void setDistance(String distance) {
-		this.distance = distance;
-	}
+    public String getDistance() {
+        return distance;
+    }
 
-	public String getDuration() {
-		return duration;
-	}
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
 
-	public void setDuration(String duration) {
-		this.duration = duration;
-	}
+    public String getDuration() {
+        return duration;
+    }
 
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
 
 }
