@@ -1,4 +1,4 @@
-CREATE TABLE Account (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,username VARCHAR(100),password VARCHAR(100) not null,firstName VARCHAR(100) not null, lastName VARCHAR(100) not null,address VARCHAR(100) not null,skills VARCHAR(100) not null);
+CREATE TABLE Account (id INT NOT NULL SERIAL PRIMARY KEY,username VARCHAR(100),password VARCHAR(100) not null,firstName VARCHAR(100) not null, lastName VARCHAR(100) not null,address VARCHAR(100) not null,skills VARCHAR(100) not null);
 create table UserConnection (userId varchar(100) not null,
 	providerId varchar(100) not null,
 	providerUserId varchar(100),
