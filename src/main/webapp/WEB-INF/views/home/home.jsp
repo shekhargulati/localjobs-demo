@@ -15,20 +15,18 @@
 		<th>Skills</th>
 		<th>Address</th>
 		<th>Distance</th>
-		<th>Duration</th>
 	</tr>
 	<c:forEach items="${recommendedJobs}" var="recommendedJob">
 	<tr>
-		<td>${recommendedJob.jobTitle}</td>
-		<td>${recommendedJob.companyName}</td>
+		<td>${recommendedJob.title}</td>
+		<td>${recommendedJob.company}</td>
 		<td><c:forEach items="${recommendedJob.skills}" var="skill">
 		<dd><c:out value="${skill}"/></dd>
 	</c:forEach></td>
 		<td>${recommendedJob.address}</td>
-		<td>${recommendedJob.distance}</td>
-		<td>${recommendedJob.duration}</td>
+		<td>${recommendedJob.distanceText}</td>
 		<td>
-		<form id="applyJob" action="jobs/apply/${recommendedJob.jobId}" method="POST">
+		<form id="applyJob" action="jobs/apply/${recommendedJob.id}" method="POST">
 			<button class="btn btn-large btn-success" type="submit">Apply Job</button>
 		</form>
 		</td>
@@ -47,18 +45,16 @@
 		<th>Skills</th>
 		<th>Address</th>
 		<th>Distance</th>
-		<th>Duration</th>
 	</tr>
 	<c:forEach items="${appliedJobs}" var="appliedJob">
 	<tr>
-		<td>${appliedJob.jobTitle}</td>
-		<td>${appliedJob.companyName}</td>
+		<td>${appliedJob.title}</td>
+		<td>${appliedJob.company}</td>
 		<td><c:forEach items="${appliedJob.skills}" var="skill">
 		<dd><c:out value="${skill}"/></dd>
 	</c:forEach></td>
 		<td>${appliedJob.address}</td>
-		<td>${appliedJob.distance}</td>
-		<td>${appliedJob.duration}</td>
+		<td>${appliedJob.distanceText}</td>
 	</tr>
 
 	</c:forEach>

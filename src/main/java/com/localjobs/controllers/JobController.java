@@ -8,13 +8,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.geo.GeoResult;
-import org.springframework.data.mongodb.core.geo.GeoResults;
-import org.springframework.data.mongodb.core.geo.Metric;
-import org.springframework.data.mongodb.core.geo.Metrics;
-import org.springframework.data.mongodb.core.geo.Point;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -29,8 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.localjobs.domain.Account;
 import com.localjobs.domain.Job;
-import com.localjobs.googleapi.DistanceResponse;
-import com.localjobs.googleapi.GoogleDistanceClient;
+import com.localjobs.domain.JobVo;
 import com.localjobs.jpa.repository.AccountRepository;
 import com.localjobs.service.CoordinateFinder;
 import com.localjobs.service.FullTextSearchService;
@@ -51,9 +44,6 @@ public class JobController {
     private AccountRepository accountRepository;
 
     @Inject
-    private GoogleDistanceClient googleDistanceClient;
-
-    @Inject
     private FullTextSearchService fullTextSearchService;
 
     public JobController() {
@@ -61,14 +51,11 @@ public class JobController {
 
     @RequestMapping(value = "nearme/{skills}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<GeoResult<Job>> allJobsNearToLocationWithSkill(@PathVariable("skills") String[] skills,
+    public List<JobVo> allJobsNearToLocationWithSkill(@PathVariable("skills") String[] skills,
             @RequestParam("longitude") double longitude, @RequestParam("latitude") double latitude) throws Exception {
 
-        Metric metric = Metrics.KILOMETERS;
-        Query skillsWhereClause = Query.query(Criteria.where("skills").in(skills));
-        NearQuery nearQuery = NearQuery.near(new Point(longitude, latitude), metric).query(skillsWhereClause).num(10);
-        GeoResults<Job> geoResults = mongoTemplate.geoNear(nearQuery, Job.class);
-        List<GeoResult<Job>> jobs = geoResults.getContent();
+        List<JobVo> jobs = localJobsService.recommendJobs(latitude, longitude, skills,
+                SecurityUtils.getCurrentLoggedInUsername());
         return jobs;
     }
 
@@ -112,8 +99,8 @@ public class JobController {
 
         double latitude = coordinates[0];
         double longitude = coordinates[1];
-        List<JobDistanceVo> jobsWithDistance = findJobsWithLocation(latitude, longitude);
-        model.addAttribute("jobs", jobsWithDistance);
+        List<Job> jobs = localJobsService.findAllJobsNear(latitude, longitude);
+        model.addAttribute("jobs", jobs);
         return "jobs";
     }
 
@@ -122,19 +109,6 @@ public class JobController {
         String username = SecurityUtils.getCurrentLoggedInUsername();
         localJobsService.appyJob(jobId, username);
         return "redirect:/home";
-    }
-
-    private List<JobDistanceVo> findJobsWithLocation(double latitude, double longitude) {
-        List<Job> jobs = localJobsService.findAllJobsNear(latitude, longitude);
-        List<JobDistanceVo> locaJobsWithDistance = new ArrayList<JobDistanceVo>();
-        for (Job localJob : jobs) {
-            DistanceResponse response = googleDistanceClient.findDirections(localJob.getLocation(), new double[] {
-                    latitude, longitude });
-            JobDistanceVo linkedinJobWithDistance = new JobDistanceVo(localJob, response.rows[0].elements[0].distance,
-                    response.rows[0].elements[0].duration);
-            locaJobsWithDistance.add(linkedinJobWithDistance);
-        }
-        return locaJobsWithDistance;
     }
 
     @RequestMapping(value = "/fulltext/{query}", produces = MediaType.APPLICATION_JSON_VALUE)

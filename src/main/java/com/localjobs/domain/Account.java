@@ -101,5 +101,5 @@ public class Account extends AbstractEntity {
         return "Account [username=" + username + ", password=" + password + ", firstName=" + firstName + ", lastName="
                 + lastName + ", address=" + address + "]";
     }
-    
+
 }

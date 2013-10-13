@@ -49,14 +49,14 @@ function renderAllJobs(jobs , userLocation){
 
 function renderJob(job , userLocation , directionsService){
 	console.log(JSON.stringify(job));
-	console.log(job['content'].jobTitle);
-	console.log(job['content'].id);
-	console.log(job['content'].location[0]);
-	console.log(job['content'].location[1]);
+	console.log(job.title);
+	console.log(job.id);
+	console.log(job.lngLat[0]);
+	console.log(job.lngLat[1]);
 	var jobRow = "<div class='row'>";
-	jobRow += "<h2>"+job['content'].jobTitle+" at "+job['content'].company.companyName+"</h2>";
-	jobRow += "<div id='routeMap-"+job['content'].id+"' class='span6' style='height: 500px'></div>";
-	jobRow += "<div id='directionsPanel-"+job['content'].id+"' class='span5 offset1' style='height: 500px;overflow:scroll'></div>";
+	jobRow += "<h2>"+job.title+" at "+job.company+"</h2>";
+	jobRow += "<div id='routeMap-"+job.id+"' class='span6' style='height: 500px'></div>";
+	jobRow += "<div id='directionsPanel-"+job.id+"' class='span5 offset1' style='height: 500px;overflow:scroll'></div>";
 	jobRow += "</div>";
 	$('#results').append(jobRow);
 
@@ -72,7 +72,7 @@ function renderJob(job , userLocation , directionsService){
 					  }
 			};
 
-	var map = new google.maps.Map(document.getElementById('routeMap-'+job['content'].id),
+	var map = new google.maps.Map(document.getElementById('routeMap-'+job.id),
 					      mapOptions);
 
 	var directionRenderer = new google.maps.DirectionsRenderer({suppressMarkers: true});
@@ -104,7 +104,7 @@ function renderJob(job , userLocation , directionsService){
 
 	var request = {
 				   origin : userLocation,
-				   destination : new google.maps.LatLng(job['content'].location[1], job['content'].location[0]),
+				   destination : new google.maps.LatLng(job.lngLat[1], job.lngLat[0]),
 				   travelMode : google.maps.DirectionsTravelMode.DRIVING,
 				   unitSystem: google.maps.UnitSystem.METRIC
 	};
@@ -117,7 +117,7 @@ function renderJob(job , userLocation , directionsService){
 			 makeMarker( map , leg.start_location, icons.start, "title" );
 			 makeMarker( map , leg.end_location, icons.end, 'title' );
 
-			directionRenderer.setPanel(document.getElementById("directionsPanel-"+job['content'].id));
+			directionRenderer.setPanel(document.getElementById("directionsPanel-"+job.id));
 		}
 	});
 

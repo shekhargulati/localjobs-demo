@@ -3,6 +3,7 @@ package com.localjobs.service;
 import java.util.List;
 
 import com.localjobs.domain.Job;
+import com.localjobs.domain.JobVo;
 
 public interface LocalJobsService {
     List<Job> findAllJobs();
@@ -21,7 +22,8 @@ public interface LocalJobsService {
 
     void appyJob(String jobId, String username);
 
-    List<Job> recommendJobs(double latitude, double longitude, String[] skills, String username);
 
-    List<Job> appliedJobs(String user);
+    List<JobVo> appliedJobs(double latitude, double longitude, String user);
+
+    public abstract List<JobVo> recommendJobs(double latitude, double longitude, String[] skills, String username);
 }

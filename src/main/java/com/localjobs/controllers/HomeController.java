@@ -1,7 +1,6 @@
 package com.localjobs.controllers;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.localjobs.domain.Account;
-import com.localjobs.domain.Job;
-import com.localjobs.googleapi.DistanceResponse;
-import com.localjobs.googleapi.GoogleDistanceClient;
+import com.localjobs.domain.JobVo;
 import com.localjobs.jpa.repository.AccountRepository;
 import com.localjobs.service.CoordinateFinder;
 import com.localjobs.service.LocalJobsService;
@@ -33,10 +30,7 @@ public class HomeController {
 
     private LocalJobsService localJobsService;
 
-    @Inject
-    private GoogleDistanceClient googleDistanceClient;
-
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Inject
     public HomeController(Provider<ConnectionRepository> connectionRepositoryProvider,
@@ -57,41 +51,26 @@ public class HomeController {
         double latitude = coordinates[0];
         double longitude = coordinates[1];
 
-        List<JobDistanceVo> recommendedJobs = recommendedJobs(latitude, longitude,
-                account.getSkills().toArray(new String[0]));
+        List<JobVo> recommendedJobs = recommendedJobs(latitude, longitude, account.getSkills().toArray(new String[0]));
 
         logger.info("Found jobs" + recommendedJobs);
 
         model.addAttribute("recommendedJobs", recommendedJobs);
 
-        List<JobDistanceVo> appliedJobs = appliedJobs(latitude, longitude, SecurityUtils.getCurrentLoggedInUsername());
+        List<JobVo> appliedJobs = appliedJobs(latitude, longitude, SecurityUtils.getCurrentLoggedInUsername());
         model.addAttribute("appliedJobs", appliedJobs);
         return "home";
     }
 
-    private List<JobDistanceVo> appliedJobs(double latitude, double longitude, String user) {
-        List<Job> jobs = localJobsService.appliedJobs(user);
-        return toJobDistanceVo(latitude, longitude, jobs);
+    private List<JobVo> appliedJobs(double latitude, double longitude, String user) {
+        return localJobsService.appliedJobs(latitude, longitude, user);
     }
 
-    private List<JobDistanceVo> recommendedJobs(double latitude, double longitude, String[] skills) throws Exception {
+    private List<JobVo> recommendedJobs(double latitude, double longitude, String[] skills) throws Exception {
 
-        List<Job> jobs = localJobsService.recommendJobs(latitude, longitude, skills,
+        List<JobVo> jobs = localJobsService.recommendJobs(latitude, longitude, skills,
                 SecurityUtils.getCurrentLoggedInUsername());
-        return toJobDistanceVo(latitude, longitude, jobs);
-    }
-
-    private List<JobDistanceVo> toJobDistanceVo(double latitude, double longitude, List<Job> jobs) {
-        List<JobDistanceVo> jobsDistanceVo = new ArrayList<JobDistanceVo>();
-        for (Job job : jobs) {
-            double[] origin = { job.getLocation()[1], job.getLocation()[0] };
-            double[] destination = new double[] { latitude, longitude };
-            DistanceResponse response = googleDistanceClient.findDirections(origin, destination);
-            JobDistanceVo vo = new JobDistanceVo(job, response.rows[0].elements[0].distance,
-                    response.rows[0].elements[0].duration);
-            jobsDistanceVo.add(vo);
-        }
-        return jobsDistanceVo;
+        return jobs;
     }
 
     private ConnectionRepository getConnectionRepository() {

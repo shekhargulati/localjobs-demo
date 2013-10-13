@@ -39,7 +39,6 @@
 				geocoder = new google.maps.Geocoder();
 				if(useCurrentLocation){
 					getCurrentPosition(callback , skills);
-					$("#jobSearchForm")[0].reset();
 				}else{
 					geocoder.geocode( { 'address': address}, function(results, status) {
 					      if (status == google.maps.GeocoderStatus.OK) {
@@ -49,7 +48,6 @@
 					    	  console.log('latitude .. '+latitude);
 				
 								$.get("/jobs/nearme/"+skills+"?longitude="+longitude+"&latitude="+latitude  , function (results){
-									$("#jobSearchForm")[0].reset();
 				                    $("#jobSearchForm").unmask();
 				                    self.renderResults(results,self);
 				                });
@@ -93,19 +91,19 @@
 					return this;
 				},
 				jobtitle : function(){
-					return (this.result['content'])['jobTitle'];
+					return this.result.title;
 				},
 				address : function(){
-					return (this.result['content'])['formattedAddress'];
+					return this.result.address;
 				},
 				skills : function(){
-					return (this.result['content'])['skills'];
+					return this.result.skills;
 				},
 				company : function(){
-					return ((this.result['content'])['company'])['companyName'];
+					return this.result.company;
 				},
 				distance : function(){
-					return (this.result['distance'])['value'] + " "+ (this.result['distance'])['metric'];
+					return this.result.distanceText;
 				}
 				
 				
