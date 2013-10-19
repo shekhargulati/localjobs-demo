@@ -14,7 +14,7 @@ import com.flaptor.indextank.apiclient.IndexTankClient.SearchResults;
 @Service
 public class SearchifyFullTextSearchService implements FullTextSearchService {
 
-    private static final String API_URL = "http://:pBt1pstGOpxEd3@dxm6q.api.searchify.com";
+    private static final String API_URL = System.getenv("SEARHCHIFY_API_URL");
     private static final String INDEX_NAME = "localjobs_index";
 
     private final IndexTankClient client;
@@ -49,5 +49,6 @@ public class SearchifyFullTextSearchService implements FullTextSearchService {
         }
         return documentIds;
     }
+    
 
 }
